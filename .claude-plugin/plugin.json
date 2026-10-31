@@ -1,0 +1,7 @@
+{
+  "name": "oh-my-uipath",
+  "version": "0.1.0",
+  "description": "Multi-agent orchestration for UiPath + Claude Code — autopilot, team, ralph, ask with uipathcli integration",
+  "skills": "./skills/",
+  "commands": "./commands/"
+}

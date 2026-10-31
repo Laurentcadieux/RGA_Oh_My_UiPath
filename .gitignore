@@ -1,3 +1,7 @@
+# Dependencies
+node_modules/
+dist/
+
 # Deploy keys
 .deploy_key
 .deploy_key.pub
@@ -6,3 +10,11 @@
 research/omc-source/
 research/uipath-skills/
 research/uipathcli-source/
+
+# State
+.omu/
+
+# IDE
+.idea/
+.vscode/
+*.swp
