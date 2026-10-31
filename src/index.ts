@@ -73,5 +73,58 @@ export {
   type LookoutReport,
 } from "./lookout/index.js";
 
+// UiPath Lookout
+export {
+  scanCommand,
+  scanForSecrets,
+  scanDependencies,
+  scanScope,
+  scanProject,
+  scanTask,
+  type UiPathLookoutResult,
+  type LookoutSeverity as UiPathLookoutSeverity,
+  type LookoutFinding as UiPathLookoutFinding,
+} from "./lookout/uipath-lookout.js";
+
+// Discovery
+export {
+  discoverProject,
+  isUiPathProject,
+  watchProject,
+  type UiPathProjectType,
+  type UiPathProjectDiscovery,
+  type UiPathProjectManifest,
+  type DiscoveredFile,
+} from "./discovery/index.js";
+
+// Lifecycle
+export {
+  createLifecyclePipeline,
+  packProject,
+  publishProject,
+  deployProject,
+  activateProject,
+  promoteProject,
+  type LifecycleOptions,
+  type LifecycleResult,
+  type LifecycleStep,
+  type LifecyclePipeline,
+} from "./lifecycle/index.js";
+
+// Interview
+export {
+  createInterview,
+  answerQuestion,
+  getNextQuestion,
+  batchAnswer,
+  generateDesignDocument,
+  generatePipelineInput,
+  completeInterview,
+  type InterviewQuestion,
+  type InterviewCategory,
+  type InterviewSession,
+  type InterviewResult,
+} from "./interview/index.js";
+
 // CLI
 export { run as runCli } from "./cli/index.js";

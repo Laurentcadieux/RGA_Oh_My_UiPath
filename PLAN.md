@@ -1,30 +1,25 @@
 # Project Plan
 
-## Phase 0 — Research & Reverse Engineering
+## Phase 0 — Research & Reverse Engineering ✅
 
-- [ ] Clone and explore oh-my-claudecode source structure
-- [ ] Use REA to reverse-engineer OMC's orchestration patterns:
-  - [ ] Skill/plugin registration mechanism
-  - [ ] Autopilot stage pipeline (ralplan → execution → ralph/qa)
-  - [ ] Team orchestration (tmux workers + in-session native)
-  - [ ] Ask provider routing
-  - [ ] Ralph autonomous agent loop
-  - [ ] Deep interview workflow
-  - [ ] Lookout danger scan
-  - [ ] CLI vs in-session skill surface mapping
-- [ ] Document OMC's architecture in `docs/omc-architecture.md`
-- [ ] Catalog uipath/skills structure and SKILL.md patterns
-- [ ] Catalog uipathcli command surface and auth flows
+- [x] Clone and explore oh-my-claudecode source structure
+- [x] Use REA to reverse-engineer OMC's orchestration patterns
+- [x] Document OMC's architecture in `docs/omc-architecture.md`
+- [x] Catalog uipath/skills structure and SKILL.md patterns
+- [x] Catalog uipathcli command surface and auth flows
 
-## Phase 1 — Core Orchestration Adapter
+## Phase 1 — Core Orchestration Adapter ✅
 
-- [ ] Define the plugin/skill registration contract for UiPath
-- [ ] Build the orchestration adapter that maps OMC patterns to UiPath context:
-  - [ ] UiPath-aware autopilot stages
-  - [ ] Team orchestration with UiPath skill sub-agents
-  - [ ] Ask provider with uipathcli as a provider
-- [ ] Wire uipathcli commands as first-class tools
-- [ ] Wire uipath/skills as sub-agent invocations
+- [x] Define the plugin/skill registration contract for UiPath
+- [x] Build the orchestration adapter that maps OMC patterns to UiPath context
+  - [x] UiPath-aware autopilot stages (ralplan, execution, ralph, qa)
+  - [x] Team orchestration with UiPath skill sub-agents
+  - [x] Ask provider with uipathcli as a provider
+- [x] Wire uipathcli commands as first-class tools (`src/uipathcli/index.ts`)
+- [x] Wire uipath/skills as sub-agent invocations (`src/skills/sub-agent.ts`)
+- [x] CLI surface: setup, ask, uip, autopilot, ralph, team, lookout, config
+- [x] Production SKILL.md files for all 6 omu skills
+- [x] Plugin wiring (`.claude-plugin/plugin.json`)
 
 ## Phase 2 — UiPath-Specific Features
 

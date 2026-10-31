@@ -25,6 +25,10 @@ import {
   uipSkillExec,
 } from "../uipathcli/index.js";
 import { createTeamOrchestrator } from "../team/orchestrator.js";
+import { discoverProject, isUiPathProject } from "../discovery/index.js";
+import { createLifecyclePipeline } from "../lifecycle/index.js";
+import { scanTask as uipathScanTask, scanProject as uipathScanProject } from "../lookout/uipath-lookout.js";
+import { createInterview, getNextQuestion, answerQuestion, generateDesignDocument, generatePipelineInput } from "../interview/index.js";
 
 const VERSION = "0.1.0";
 
@@ -247,6 +251,183 @@ export function run(): void {
     .action(async () => {
       const config = await loadConfig();
       console.log(JSON.stringify(config, null, 2));
+    });
+
+  // ── discover ──────────────────────────────────────────────────
+  program
+    .command("discover")
+    .description("Detect UiPath project type and suggest skills/commands")
+    .argument("[dir]", "Directory to scan", process.cwd())
+    .option("--json", "Output as JSON")
+    .action(async (dir, opts) => {
+      const discovery = await discoverProject(dir);
+      if (opts.json) {
+        console.log(JSON.stringify(discovery, null, 2));
+      } else {
+        console.log(`📁 ${dir}`);
+        console.log(`   Type: ${discovery.type} (confidence: ${(discovery.confidence * 100).toFixed(0)}%)`);
+        if (discovery.manifest) {
+          console.log(`   Name: ${discovery.manifest.name}`);
+          console.log(`   Framework: ${discovery.manifest.framework ?? "unknown"}`);
+        }
+        console.log(`   Files: ${discovery.files.length} characteristic files`);
+        console.log(`   Suggested skill: ${discovery.suggestedSkill}`);
+        console.log(`   Suggested commands: ${discovery.suggestedCommands.map(c => `uip ${c}`).join(", ")}`);
+        for (const note of discovery.notes) {
+          console.log(`   → ${note}`);
+        }
+      }
+    });
+
+  // ── lifecycle ─────────────────────────────────────────────────
+  program
+    .command("lifecycle")
+    .description("UiPath solution lifecycle: pack, publish, deploy, activate")
+    .argument("<step>", "Step: init|pack|publish|deploy|activate|promote|test-and-promote")
+    .option("--dir <dir>", "Project directory", process.cwd())
+    .option("--orchestrator <url>", "Orchestrator URL")
+    .option("--tenant <tenant>", "Tenant")
+    .option("--dry-run", "Print commands without executing")
+    .action(async (step, opts) => {
+      const pipeline = createLifecyclePipeline();
+      const lifecycleOpts = {
+        cwd: opts.dir,
+        orchestratorUrl: opts.orchestrator,
+        tenant: opts.tenant,
+        dryRun: opts.dryRun ?? false,
+      };
+
+      if (step === "promote") {
+        console.log("🚀 Promoting: pack → publish → deploy → activate");
+        const results = await pipeline.promote(lifecycleOpts);
+        for (const r of results) {
+          const icon = r.exitCode === 0 ? "✅" : "❌";
+          console.log(`${icon} ${r.step}: ${r.durationMs}ms`);
+          if (r.artifacts.length > 0) console.log(`   Artifacts: ${r.artifacts.join(", ")}`);
+          if (r.exitCode !== 0) console.log(`   Error: ${r.errors}`);
+        }
+      } else if (step === "test-and-promote") {
+        console.log("🧪 Testing, then promoting if green");
+        const results = await pipeline.testAndPromote(lifecycleOpts);
+        for (const r of results) {
+          const icon = r.exitCode === 0 ? "✅" : "❌";
+          console.log(`${icon} ${r.step}: ${r.durationMs}ms`);
+          if (r.exitCode !== 0) console.log(`   Error: ${r.errors}`);
+        }
+      } else {
+        const result = await pipeline.run(step as any, lifecycleOpts);
+        const icon = result.exitCode === 0 ? "✅" : "❌";
+        console.log(`${icon} ${result.step}: ${result.durationMs}ms`);
+        if (result.output) console.log(result.output);
+        if (result.artifacts.length > 0) console.log(`Artifacts: ${result.artifacts.join(", ")}`);
+        if (result.exitCode !== 0) process.exit(1);
+      }
+    });
+
+  // ── interview ─────────────────────────────────────────────────
+  program
+    .command("interview")
+    .description("Run a deep interview for UiPath automation design")
+    .option("--type <type>", "Project type: classic-rpa|coded-automation|coded-agent|cross-platform")
+    .option("--answer <answers>", "JSON map of questionId→answer for batch answering")
+    .option("--json", "Output as JSON")
+    .action(async (opts) => {
+      const projectType = opts.type as any ?? undefined;
+      let session = createInterview(projectType);
+
+      if (opts.answer) {
+        // Batch mode
+        const answers = JSON.parse(opts.answer);
+        for (const [id, val] of Object.entries(answers as Record<string, string>)) {
+          session = answerQuestion(session, id, val);
+        }
+      } else {
+        // Interactive: show next question
+        const next = getNextQuestion(session);
+        if (next) {
+          console.log(`\n📋 Question ${session.completedCount + 1}/${session.totalCount}:`);
+          console.log(`   ${next.question}`);
+          if (next.hints?.length) {
+            console.log(`   Hints: ${next.hints.join(" | ")}`);
+          }
+          console.log(`\n   (Use --answer '{"${next.id}": "your answer"}' to respond)`);
+        } else {
+          console.log("✅ Interview complete!");
+          const doc = generateDesignDocument(session);
+          console.log(doc);
+        }
+        return;
+      }
+
+      if (opts.json) {
+        console.log(JSON.stringify(session, null, 2));
+      } else {
+        console.log(`\n📋 Interview: ${session.completedCount}/${session.totalCount} answered`);
+        console.log(`   Status: ${session.status}`);
+
+        if (session.status === "complete") {
+          console.log("\n📄 Design Document:");
+          console.log(generateDesignDocument(session));
+          console.log("\n🔗 Pipeline Input:");
+          const input = generatePipelineInput(session);
+          console.log(`   Task: ${input.task}`);
+          console.log(`   Skills: ${input.skills.join(", ")}`);
+        } else {
+          const next = getNextQuestion(session);
+          if (next) {
+            console.log(`\n   Next: ${next.question}`);
+          }
+        }
+      }
+    });
+
+  // ── scan (enhanced lookout) ───────────────────────────────────
+  program
+    .command("scan")
+    .description("UiPath-aware security and safety scan")
+    .argument("[target]", "Task string or directory to scan", process.cwd())
+    .option("--json", "Output as JSON")
+    .action(async (target, opts) => {
+      // Detect if target is a directory or a command string
+      let isDir = false;
+      try {
+        const { stat } = await import("node:fs/promises");
+        const s = await stat(target);
+        isDir = s.isDirectory();
+      } catch { /* not a dir */ }
+
+      if (isDir) {
+        console.log(`🔍 Scanning UiPath project: ${target}`);
+        const result = await uipathScanProject(target);
+        if (opts.json) {
+          console.log(JSON.stringify(result, null, 2));
+        } else {
+          console.log(`   Files scanned: ${result.filesScanned}`);
+          console.log(`   Findings: ${result.findings.length}`);
+          console.log(`   Status: ${result.status}`);
+          for (const f of result.findings) {
+            const icon = f.severity === "review-recommended" ? "⚠️" : f.severity === "advisory" ? "ℹ️" : "🚨";
+            console.log(`${icon} [${f.category}] ${f.message}`);
+            if (f.suggestion) console.log(`   → ${f.suggestion}`);
+          }
+        }
+      } else {
+        const result = uipathScanTask(target);
+        if (opts.json) {
+          console.log(JSON.stringify(result, null, 2));
+        } else {
+          if (result.findings.length === 0) {
+            console.log("✅ Clear — no danger signals.");
+          } else {
+            for (const f of result.findings) {
+              const icon = f.severity === "review-recommended" ? "⚠️" : "ℹ️";
+              console.log(`${icon} [${f.category}] ${f.message}`);
+              if (f.suggestion) console.log(`   → ${f.suggestion}`);
+            }
+            console.log(`\nVerdict: ${result.status}`);
+          }
+        }
+      }
     });
 
   program.parse();
