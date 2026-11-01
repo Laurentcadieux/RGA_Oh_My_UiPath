@@ -1,6 +1,6 @@
 {
   "name": "oh-my-uipath-c",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Multi-agent orchestration for UiPath + Claude Code, adapted from oh-my-claudecode",
   "type": "module",
   "main": "dist/index.js",

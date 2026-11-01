@@ -1,14 +1,19 @@
 {
-  "name": "oh-my-uipath",
-  "version": "0.2.0",
+  "name": "oh-my-uipath-c",
+  "version": "0.3.0",
   "description": "Multi-agent orchestration for UiPath + Claude Code — autopilot, team, ralph, ask with uipathcli integration",
   "entry": "src/index.ts",
+  "agents": "./agents/",
   "skills": "./skills/",
   "commands": "./commands/",
   "hooks": {
     "pre-tool-use": "src/hooks/pre-tool-use.ts",
     "post-tool-use": "src/hooks/post-tool-use.ts",
     "notification": "src/hooks/notification.ts"
+  },
+  "mcp": {
+    "command": "omu-c",
+    "args": ["mcp"]
   },
   "config": {
     "uipathcliPath": {

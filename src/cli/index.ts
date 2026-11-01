@@ -435,5 +435,14 @@ export function run(): void {
       }
     });
 
+  // ── mcp ────────────────────────────────────────────────────────
+  program
+    .command("mcp")
+    .description("Start MCP server for Claude Code integration (stdio transport)")
+    .action(() => {
+      const { startMcpServer } = require("../mcp/server.js") as { startMcpServer: () => void };
+      startMcpServer();
+    });
+
   program.parse();
 }

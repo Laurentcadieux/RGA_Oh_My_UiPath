@@ -1,0 +1,18 @@
+{
+  "id": "oh-my-uipath-c",
+  "name": "oh-my-uipath-c",
+  "version": "0.3.0",
+  "description": "Multi-agent orchestration for UiPath + Claude Code — autopilot pipeline, team orchestration, ralph coding loop, UiPath CLI integration, security scanning",
+  "author": "laurentc",
+  "repository": "https://github.com/laurentc/RGA_Oh_My_UiPath",
+  "license": "MIT",
+  "keywords": ["uipath", "claude-code", "orchestration", "autopilot", "multi-agent", "rpa", "automation", "cli"],
+  "categories": ["automation", "devops", "testing"],
+  "requirements": {
+    "uipathcli": {
+      "description": "UiPath CLI for Orchestrator operations",
+      "optional": true,
+      "install": "curl -fsSL https://download.uipath.com/uipath-cli/install.sh | bash"
+    }
+  }
+}
