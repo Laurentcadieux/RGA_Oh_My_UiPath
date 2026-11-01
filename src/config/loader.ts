@@ -153,7 +153,7 @@ export async function loadConfig(options?: {
   const projectDir = options?.projectDir ?? process.cwd();
   const userConfigDir = options?.userConfigDir ?? join(homedir(), ".config", "omu");
 
-  let config: Record<string, unknown> = buildDefaultConfig();
+  let config: OmUConfig = buildDefaultConfig();
 
   // Layer 1: user config
   const userConfigPath = join(userConfigDir, "config.jsonc");
@@ -161,7 +161,7 @@ export async function loadConfig(options?: {
     try {
       const content = await readFile(userConfigPath, "utf-8");
       const parsed = JSON.parse(stripJsonc(content));
-      config = deepMerge(config, parsed);
+      config = deepMerge(config as Record<string, unknown>, parsed) as OmUConfig;
     } catch { /* ignore parse errors */ }
   }
 
@@ -171,7 +171,7 @@ export async function loadConfig(options?: {
     try {
       const content = await readFile(projectConfigPath, "utf-8");
       const parsed = JSON.parse(stripJsonc(content));
-      config = deepMerge(config, parsed);
+      config = deepMerge(config as Record<string, unknown>, parsed) as OmUConfig;
     } catch { /* ignore parse errors */ }
   }
 
@@ -199,5 +199,5 @@ export async function loadConfig(options?: {
   if (envOrg) config.uipath = { ...config.uipath, org: envOrg };
   if (envTenant) config.uipath = { ...config.uipath, tenant: envTenant };
 
-  return config as OmUConfig;
+  return config;
 }

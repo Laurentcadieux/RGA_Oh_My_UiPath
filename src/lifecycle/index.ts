@@ -8,7 +8,9 @@
  * autopilot pipeline or invoked directly via the CLI.
  */
 
-import { execFile } from "node:child_process/promises";
+import { execFile as _execFile } from "node:child_process";
+import { promisify } from "node:util";
+const execFile = promisify(_execFile);
 import { readFile, writeFile, mkdir, stat } from "node:fs/promises";
 import { join, basename } from "node:path";
 import type { UiPathProjectDiscovery } from "../discovery/index.js";

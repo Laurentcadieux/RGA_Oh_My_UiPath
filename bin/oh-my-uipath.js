@@ -5,6 +5,6 @@
  * Usage: omu <command> [options]
  */
 
-import { run } from "../src/cli/index.js";
+import { run } from "../dist/cli/index.js";
 
 run();

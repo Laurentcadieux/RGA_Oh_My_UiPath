@@ -2,13 +2,14 @@
  * Skill registry — loads and manages skills from both OMC and UiPath skill catalogs.
  *
  * Adapted from OMC's createBuiltinSkills() but extended to:
- * 1. Load OMC skills (skills/omc/*/SKILL.md)
- * 2. Load UiPath skills (skills/uipath/*/SKILL.md)
+ * 1. Load OMC skills  (skills/omc/<star>/SKILL.md)
+ * 2. Load UiPath skills  (skills/uipath/<star>/SKILL.md)
  * 3. Apply naming policy (omc- prefix for CC-native collisions)
  * 4. Cache with invalidation on config changes
  */
 
-import { parseFrontmatter, type SkillFrontmatter } from "./frontmatter.js";
+import { parseFrontmatter } from "./frontmatter.js";
+import type { SkillFrontmatter } from "./frontmatter.js";
 import { readFile, readdir } from "node:fs/promises";
 import { join, resolve } from "node:path";
 

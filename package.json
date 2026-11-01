@@ -3,16 +3,26 @@
   "version": "0.2.0",
   "description": "Multi-agent orchestration for UiPath + Claude Code, adapted from oh-my-claudecode",
   "type": "module",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "bin": {
     "omu": "bin/oh-my-uipath.js"
   },
+  "files": [
+    "dist",
+    "bin",
+    "skills",
+    "commands",
+    "docs",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
     "lint": "eslint src/",
     "test": "node --experimental-strip-types src/__tests__/run-tests.ts",
-    "prepublishOnly": "npm test"
+    "prepublishOnly": "npm run build && npm test"
   },
   "keywords": ["uipath", "claude-code", "orchestration", "autopilot", "multi-agent", "omc"],
   "license": "MIT",

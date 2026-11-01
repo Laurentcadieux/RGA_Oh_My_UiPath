@@ -39,8 +39,10 @@ export const uipathProvider: AskProviderContract = {
 
   async isAvailable() {
     try {
-      const { exec } = await import("node:child_process/promises");
-      await exec("which uip");
+      const { execFile: _execFile } = await import("node:child_process");
+      const { promisify } = await import("node:util");
+      const execFile = promisify(_execFile);
+      await execFile("which", ["uip"]);
       return true;
     } catch {
       return false;

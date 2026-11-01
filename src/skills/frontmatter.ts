@@ -46,7 +46,7 @@ export function parseFrontmatter(content: string): {
   const yamlBlock = trimmed.slice(endOfOpening + 1, closingIndex);
   const body = trimmed.slice(closingIndex + 4); // skip \n---
 
-  const frontmatter = parseYamlSimple(yamlBlock) as SkillFrontmatter;
+  const frontmatter = parseYamlSimple(yamlBlock) as unknown as SkillFrontmatter;
 
   return { frontmatter, body };
 }

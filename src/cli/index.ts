@@ -85,7 +85,9 @@ export function run(): void {
       console.log(`→ Routing to ${contract.name} (${contract.binary})`);
       console.log(`→ Args: ${args.join(" ")}`);
 
-      const { execFile } = await import("node:child_process/promises");
+      const { execFile: _execFile } = await import("node:child_process");
+      const { promisify } = await import("node:util");
+      const execFile = promisify(_execFile);
       try {
         const { stdout } = await execFile(contract.binary, args, {
           timeout: contract.quirks?.timeout ?? 60_000,

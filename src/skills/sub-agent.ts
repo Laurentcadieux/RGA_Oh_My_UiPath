@@ -9,10 +9,14 @@
  * 3. Spawns the skill as a sub-agent (in-session or CLI)
  */
 
-import { readFile, readdir, access, mkdir, writeFile } from "node:fs/promises";
+import { readFile, readdir, mkdir, writeFile } from "node:fs/promises";
+import { accessSync } from "node:fs";
 import { join, resolve } from "node:path";
-import { execFile } from "node:child_process/promises";
-import { parseFrontmatter, type SkillFrontmatter } from "./frontmatter.js";
+import { execFile as _execFile } from "node:child_process";
+import { promisify } from "node:util";
+const execFile = promisify(_execFile);
+import { parseFrontmatter } from "./frontmatter.js";
+import type { SkillFrontmatter } from "./frontmatter.js";
 
 // ─── Types ────────────────────────────────────────────────────────────
 
@@ -226,7 +230,7 @@ export async function createSubAgentDispatcher(
             skillName,
             exitCode: 1,
             output: "",
-            errors: `Skill ${skillName} not found. Available: ${(await this.listAvailable()).join(", ")}`,
+            errors: `Skill ${skillName} not found. Available: ${[...discoveredSkills.keys()].join(", ")}`,
             durationMs: Date.now() - startTime,
             artifacts: [],
           };
@@ -298,7 +302,7 @@ function getDefaultSkillsDir(): string {
   // Return first that exists (sync check is fine for startup)
   for (const dir of candidates) {
     try {
-      access.sync(dir);
+      accessSync(dir);
       return dir;
     } catch { continue; }
   }

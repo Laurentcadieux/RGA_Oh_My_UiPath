@@ -5,7 +5,9 @@
  * This is the bridge between the orchestration layer and uipathcli.
  */
 
-import { execFile } from "node:child_process/promises";
+import { execFile as _execFile } from "node:child_process";
+import { promisify } from "node:util";
+const execFile = promisify(_execFile);
 import { access } from "node:fs/promises";
 
 export interface UipExecutionResult {
