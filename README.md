@@ -124,22 +124,30 @@ omu-c discovers your UiPath project type and routes to the right skill:
 src/
 ├── cli/              # CLI entry point (commander)
 ├── pipeline/         # Autopilot pipeline adapter + stages
-│   ├── adapter.ts    # Pipeline runner + validation
+│   ├── adapter.ts    # Pipeline stage interface + validation
+│   ├── parallel.ts   # DAG-based parallel runner + topological sort
 │   └── stages/       # ralplan, execution, ralph, qa
-├── team/             # Team orchestrator (sub-agent workers)
+├── team/             # Team orchestrator (real child-process workers)
+│   └── orchestrator.ts  # Lookout-gated spawn, bounded concurrency
 ├── ask/              # Ask router + providers (claude, codex, uipath)
 ├── skills/           # Skill registry, frontmatter parser, sub-agent dispatcher
 ├── discovery/        # UiPath project type detection
 ├── lifecycle/        # Solution lifecycle (pack/publish/deploy/activate)
-├── lookout/          # Base lookout + UiPath-aware danger scanner
+├── lookout/          # Legacy wrappers → delegates to packages/lookout
 ├── interview/        # Deep interview for automation design
 ├── config/           # Config loader
 ├── uipathcli/        # Typed wrapper around `uip` CLI
 └── hooks/            # Claude Code plugin hooks (pre/post-tool-use, notification)
 
+packages/
+└── lookout/          # Standalone safety scanner (reusable)
+    ├── src/          # tokenizer, policy, secrets, audit, preview-check
+    ├── corpus/       # 99-case benchmark corpus
+    └── __tests__/    # Unit tests + benchmark runner
+
 skills/               # SKILL.md files for Claude Code
 commands/             # Slash command markdown
-docs/                 # Architecture docs, catalogs
+docs/                 # Architecture docs, catalogs, benchmark reports
 ```
 
 ## Plugin Hooks
@@ -169,13 +177,19 @@ Completed interviews generate a **design document** and **autopilot pipeline inp
 
 ## Safety Scanning
 
-omu-c scans for:
+omu-c's **Lookout** (`packages/lookout/`) is a command-aware safety scanner with a 99-case benchmark corpus achieving 100% accuracy and 0% false positives.
 
-- **Destructive operations** — delete robot/queue/process/folder, unpublish, purge
-- **Production flags** — --force, --skip-confirmation, --yes
-- **Secret exposure** — hardcoded passwords, API keys, tokens, AWS/GitHub keys
-- **Scope violations** — prod without folder, deploy without tenant
-- **Stale dependencies** — pre-release versions, outdated major versions
+It scans for:
+
+- **Destructive operations** — delete, remove, purge, deactivate, unpublish, stop, kill, disable
+- **Dangerous flags** — --force, --skip-confirmation, --yes on production
+- **Secret exposure** — hardcoded passwords, API keys, tokens, AWS/GitHub/UiPath keys
+- **Scope violations** — prod without --folder, deploy without --tenant
+- **Preview skills on prod** — warns when non-GA skill targets production
+
+Only real `uip` command invocations trigger findings. English text like "delete the queue after processing" is ignored (zero false positives).
+
+See `docs/lookout-benchmark.md` for the full benchmark report.
 
 ## License
 
