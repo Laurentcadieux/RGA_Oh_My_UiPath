@@ -30,7 +30,10 @@ import { createLifecyclePipeline } from "../lifecycle/index.js";
 import { scanTask as uipathScanTask, scanProject as uipathScanProject } from "../lookout/uipath-lookout.js";
 import { createInterview, getNextQuestion, answerQuestion, generateDesignDocument, generatePipelineInput } from "../interview/index.js";
 
-const VERSION = "0.1.0";
+import { createRequire } from "node:module";
+const require = createRequire(import.meta.url);
+const pkg = require("../../package.json");
+const VERSION = pkg.version;
 
 export function run(): void {
   const program = new Command();

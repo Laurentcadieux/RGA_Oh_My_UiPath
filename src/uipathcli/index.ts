@@ -232,11 +232,29 @@ export async function uipSkillExec(
 export async function listAvailableSkills(): Promise<string[]> {
   const result = await uipExec(["skills", "list"], { output: "json", timeout: 15_000 });
   if (result.exitCode !== 0) return [];
+
+  // Try parsed JSON data first
   if (Array.isArray(result.data)) {
-    return result.data.map((s: any) => typeof s === "string" ? s : s.name ?? s.id);
+    return result.data.map((s: any) => typeof s === "string" ? s : s.name ?? s.Name ?? s.id ?? s.Id);
   }
-  // Fallback: parse text output
-  return result.stdout.split("\n").filter(l => l.trim()).map(l => l.trim());
+
+  // uip skills list often returns { Result, Code, Data: { RootDir, Skills: [...] } }
+  try {
+    const parsed = JSON.parse(result.stdout);
+    if (parsed?.Data?.Skills && Array.isArray(parsed.Data.Skills)) {
+      return parsed.Data.Skills.map((s: any) => s.Name ?? s.name ?? s.Id ?? s.id ?? String(s));
+    }
+    if (Array.isArray(parsed)) {
+      return parsed.map((s: any) => typeof s === "string" ? s : s.name ?? s.Name ?? s.id ?? s.Id);
+    }
+  } catch { /* not JSON */ }
+
+  // Fallback: parse text output, skip JSON noise
+  return result.stdout
+    .split("\n")
+    .map(l => l.trim())
+    .filter(l => l && !l.startsWith("{") && !l.startsWith("}") && !l.startsWith('"') && !l.includes("Result") && !l.includes("Code") && !l.includes("Data"))
+    .filter(l => l.length > 0 && l.length < 80);
 }
 
 /**
