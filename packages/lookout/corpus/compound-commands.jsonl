@@ -1,0 +1,4 @@
+{"input": "uip orchestrator queues delete --id 42 && uip solution deploy --name MySol", "category": "compound-commands", "expectedFindings": ["destructive", "scope-violation"], "expectedVerdict": "advisory"}
+{"input": "uip sol pack --name MySol; uip sol publish --name MySol --folder Prod --tenant Default", "category": "compound-commands", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "echo 'starting' && uip or robots delete --name OldBot", "category": "compound-commands", "expectedFindings": ["destructive"], "expectedVerdict": "advisory"}
+{"input": "uip solution deploy --name Sol --folder Staging --tenant Default && uip orchestrator queues list", "category": "compound-commands", "expectedFindings": [], "expectedVerdict": "clear"}

@@ -1,0 +1,15 @@
+{"input": "Delete the queue after processing is complete", "category": "destructive-near-miss", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "We should remove old robots from the fleet when they're decommissioned", "category": "destructive-near-miss", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "The schedule needs to be deleted from the Orchestrator UI", "category": "destructive-near-miss", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "I want to purge the queue items older than 30 days", "category": "destructive-near-miss", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "Can you unpublish the old version of the process?", "category": "destructive-near-miss", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "Stopping the job manually is sometimes necessary for debugging", "category": "destructive-near-miss", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "The delete operation on queues should require admin approval", "category": "destructive-near-miss", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "Remove the trigger and re-create it with the new schedule", "category": "destructive-near-miss", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "Kill the running process before deploying the update", "category": "destructive-near-miss", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "Deactivation of the solution is planned for next sprint", "category": "destructive-near-miss", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "Please review the queue deletion policy document", "category": "destructive-near-miss", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "A robot deletion workflow should have a confirmation step", "category": "destructive-near-miss", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "Look into why the asset was deleted unexpectedly", "category": "destructive-near-miss", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "Document the steps to remove a folder from Orchestrator", "category": "destructive-near-miss", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "We need a safety check before any delete command runs", "category": "destructive-near-miss", "expectedFindings": [], "expectedVerdict": "clear"}

@@ -1,7 +1,7 @@
 /**
  * MCP Server for Claude Code integration
  *
- * Exposes oh-my-uipath-c operations as MCP tools so Claude Code
+ * Exposes oh-my-UiPath-c operations as MCP tools so Claude Code
  * can call them directly (discover, scan, lifecycle, etc.)
  *
  * Start with: omu-c mcp
@@ -119,7 +119,7 @@ const TOOLS: McpTool[] = [
   },
   {
     name: "omu_config",
-    description: "Show the merged oh-my-uipath-c configuration",
+    description: "Show the merged oh-my-UiPath-c configuration",
     inputSchema: { type: "object" },
   },
 ];
@@ -273,7 +273,7 @@ async function handleRequest(req: JsonRpcRequest): Promise<JsonRpcResponse> {
         protocolVersion: "2024-11-05",
         capabilities: { tools: {} },
         serverInfo: {
-          name: "oh-my-uipath-c",
+          name: "oh-my-UiPath-c",
           version: pkg.version,
         },
       });

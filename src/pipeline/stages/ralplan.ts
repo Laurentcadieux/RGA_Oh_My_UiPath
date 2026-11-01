@@ -25,7 +25,7 @@ export const ralplanAdapter: PipelineStageAdapter = {
 
     return `# Ralplan — UiPath-Aware Planning
 
-You are the ralplan (rational planner) stage of the oh-my-uipath autopilot.
+You are the ralplan (rational planner) stage of the oh-my-UiPath autopilot.
 
 ## Task
 ${context.task}

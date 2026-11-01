@@ -1,0 +1,15 @@
+{"input": "uip orchestrator queues delete --id 42", "category": "destructive-real", "expectedFindings": ["destructive"], "expectedVerdict": "advisory"}
+{"input": "uip or queues delete --name MyQueue", "category": "destructive-real", "expectedFindings": ["destructive"], "expectedVerdict": "advisory"}
+{"input": "uip orchestrator robots delete --name MyRobot", "category": "destructive-real", "expectedFindings": ["destructive"], "expectedVerdict": "advisory"}
+{"input": "uip or robots delete --id 99", "category": "destructive-real", "expectedFindings": ["destructive"], "expectedVerdict": "advisory"}
+{"input": "uip orchestrator assets delete --name Credential", "category": "destructive-real", "expectedFindings": ["destructive"], "expectedVerdict": "advisory"}
+{"input": "uip orchestrator machines delete --name Machine1", "category": "destructive-real", "expectedFindings": ["destructive"], "expectedVerdict": "advisory"}
+{"input": "uip orchestrator jobs stop --id 123", "category": "destructive-real", "expectedFindings": ["destructive"], "expectedVerdict": "advisory"}
+{"input": "uip orchestrator processes delete --name Process1", "category": "destructive-real", "expectedFindings": ["destructive"], "expectedVerdict": "advisory"}
+{"input": "uip orchestrator schedules delete --id 5", "category": "destructive-real", "expectedFindings": ["destructive"], "expectedVerdict": "advisory"}
+{"input": "uip orchestrator folders remove --name OldFolder", "category": "destructive-real", "expectedFindings": ["destructive"], "expectedVerdict": "advisory"}
+{"input": "uip admin tenants delete --name TestTenant", "category": "destructive-real", "expectedFindings": ["destructive"], "expectedVerdict": "advisory"}
+{"input": "uip admin users delete --id user1", "category": "destructive-real", "expectedFindings": ["destructive"], "expectedVerdict": "advisory"}
+{"input": "uip solution deactivate --name MySolution", "category": "destructive-real", "expectedFindings": ["destructive"], "expectedVerdict": "advisory"}
+{"input": "uip orchestrator queues purge --name LogQueue", "category": "destructive-real", "expectedFindings": ["destructive"], "expectedVerdict": "advisory"}
+{"input": "uip orchestrator triggers disable --id 7", "category": "destructive-real", "expectedFindings": ["destructive"], "expectedVerdict": "advisory"}

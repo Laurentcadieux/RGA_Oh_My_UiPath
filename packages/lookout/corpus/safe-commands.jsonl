@@ -1,0 +1,15 @@
+{"input": "uip orchestrator queues list", "category": "safe-commands", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "uip orchestrator robots list --folder Default", "category": "safe-commands", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "uip solution pack --name MySolution", "category": "safe-commands", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "uip solution list", "category": "safe-commands", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "uip rpa build", "category": "safe-commands", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "uip rpa test", "category": "safe-commands", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "uip config get", "category": "safe-commands", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "uip auth login", "category": "safe-commands", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "uip skills list", "category": "safe-commands", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "uip orchestrator assets list --folder Finance", "category": "safe-commands", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "uip orchestrator jobs list --status Successful", "category": "safe-commands", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "uip orchestrator environments list", "category": "safe-commands", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "uip orchestrator packages list", "category": "safe-commands", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "uip orchestrator webhooks list", "category": "safe-commands", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "uip orchestrator stats get", "category": "safe-commands", "expectedFindings": [], "expectedVerdict": "clear"}

@@ -1,5 +1,5 @@
 /**
- * oh-my-uipath-c CLI entry point
+ * oh-my-UiPath-c CLI entry point
  *
  * Commands:
  *   omu setup          — install skills + configure
@@ -46,10 +46,10 @@ export function run(): void {
   // ── setup ──────────────────────────────────────────────────────
   program
     .command("setup")
-    .description("Install oh-my-uipath-c skills and configure for Claude Code + UiPath")
+    .description("Install oh-my-UiPath-c skills and configure for Claude Code + UiPath")
     .option("--skip-uipath", "Skip UiPath CLI/skills installation check")
     .action(async (opts) => {
-      console.log("🔧 Setting up oh-my-uipath-c...");
+      console.log("🔧 Setting up oh-my-UiPath-c...");
 
       if (!opts.skipUipath) {
         console.log("\n📦 Checking UiPath CLI...");
@@ -241,7 +241,7 @@ export function run(): void {
           for (const f of report.findings) {
             const icon = f.severity === "high" ? "🚨" : f.severity === "medium" ? "⚠️" : "ℹ️";
             console.log(`${icon} [${f.severity}] ${f.title}`);
-            console.log(`   Evidence: ${f.evidence.join(", ")}`);
+            console.log(`   Evidence: ${Array.isArray(f.evidence) ? f.evidence.join(", ") : f.evidence}`);
             console.log(`   Advice: ${f.advice}`);
           }
           console.log(`\nVerdict: ${report.summary.verdict}`);

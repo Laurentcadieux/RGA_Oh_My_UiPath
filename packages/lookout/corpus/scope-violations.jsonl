@@ -1,0 +1,7 @@
+{"input": "uip solution deploy --name MySol", "category": "scope-violations", "expectedFindings": ["scope-violation"], "expectedVerdict": "advisory"}
+{"input": "uip solution publish --name MySol", "category": "scope-violations", "expectedFindings": ["scope-violation"], "expectedVerdict": "advisory"}
+{"input": "uip solution activate --name MySol", "category": "scope-violations", "expectedFindings": ["scope-violation"], "expectedVerdict": "advisory"}
+{"input": "uip solution deploy --name MySol --folder Production", "category": "scope-violations", "expectedFindings": ["scope-violation"], "expectedVerdict": "advisory"}
+{"input": "uip solution publish --name MySol --tenant MyTenant", "category": "scope-violations", "expectedFindings": ["scope-violation"], "expectedVerdict": "advisory"}
+{"input": "uip solution deploy --name MySol --folder Prod --tenant MyTenant", "category": "scope-violations", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "uip solution publish --name MySol --folder Staging --tenant Default", "category": "scope-violations", "expectedFindings": [], "expectedVerdict": "clear"}

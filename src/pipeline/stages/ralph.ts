@@ -24,7 +24,7 @@ export const ralphAdapter: PipelineStageAdapter = {
 
     return `# Ralph — UiPath Autonomous Refinement Loop
 
-You are the Ralph stage of the oh-my-uipath autopilot.
+You are the Ralph stage of the oh-my-UiPath autopilot.
 
 ## Task
 ${context.task}

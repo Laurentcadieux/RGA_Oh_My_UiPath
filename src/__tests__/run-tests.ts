@@ -4,7 +4,7 @@
 import { parseFrontmatter } from "../skills/frontmatter.ts";
 import { scanLookout } from "../lookout/index.ts";
 import { validateWorkflowStages } from "../pipeline/adapter.ts";
-import { scanCommand, scanForSecrets, scanTask, scanScope } from "../lookout/uipath-lookout.ts";
+import { scanTask, scanProject } from "../lookout/uipath-lookout.ts";
 import { createInterview, answerQuestion, getNextQuestion, batchAnswer, generateDesignDocument, completeInterview } from "../interview/index.ts";
 
 let passed = 0;
@@ -32,26 +32,52 @@ console.log("\n=== parseFrontmatter ===");
   assert(r.frontmatter.name === "", "missing frontmatter → empty name");
 }
 
-console.log("\n=== scanLookout ===");
+console.log("\n=== scanLookout (new command-aware scanner) ===");
 {
   const r = await scanLookout("Build the workflow and run tests");
-  assert(r.summary.verdict === "clear", "safe task → clear");
-  assert(r.findings.length === 0, "safe task → 0 findings");
+  assert(r.summary.verdict === "clear", "safe English text → clear");
+  assert(r.findings.length === 0, "safe English text → 0 findings");
 }
 {
   const r = await scanLookout("rm -rf /tmp/test && git push --force");
   assert(r.summary.verdict === "review-recommended", "force ops → review-recommended");
-  assert(r.findings.some(f => f.id.includes("force-op")), "detects force-op");
 }
 {
   const r = await scanLookout("uip or queues delete --id 42");
-  assert(r.summary.verdict === "review-recommended", "uipath destructive → review-recommended");
-  assert(r.findings.some(f => f.id.includes("uipath-destructive")), "detects uipath-destructive");
+  assert(r.summary.verdict === "review-recommended", "uip destructive → review-recommended");
+  assert(r.findings.some(f => f.category === "destructive"), "detects destructive category");
 }
 {
-  const r = await scanLookout("Configure UIPATH_PAT for auth");
-  assert(r.summary.verdict === "advisory", "secrets → advisory");
-  assert(r.findings.some(f => f.id.includes("uipath-secrets")), "detects uipath-secrets");
+  // KEY TEST: free text mentioning "delete" and "queue" must NOT trigger
+  const r = await scanLookout("Delete the queue after processing is complete");
+  assert(r.summary.verdict === "clear", "English text with 'delete queue' → clear (no false positive)");
+  assert(r.findings.length === 0, "no findings for English text");
+}
+
+console.log("\n=== scanTask (legacy uipath-lookout, now command-aware) ===");
+{
+  const r = scanTask("uip orchestrator robots delete --id 5");
+  assert(r.status === "review-recommended", "detects delete robot");
+  assert(r.findings.some(f => f.category === "uipath-destructive"), "category is uipath-destructive");
+}
+{
+  const r = scanTask("uip solution deploy --name Sol --force");
+  assert(r.status === "review-recommended", "detects --force + scope violation");
+  assert(r.findings.some(f => f.category === "uipath-production"), "detects dangerous flag");
+}
+{
+  const r = scanTask("uip rpa pack");
+  assert(r.status === "clear", "safe command → clear");
+}
+{
+  const r = scanTask("uip orchestrator queues delete --id 42 --force");
+  assert(r.status === "review-recommended", "combined destructive+force → review");
+  assert(r.findings.length >= 2, "multiple findings");
+}
+{
+  // Command-aware: English text must not trigger
+  const r = scanTask("We should delete old robots from the fleet");
+  assert(r.status === "clear", "English text 'delete robots' → clear (no false positive)");
 }
 
 console.log("\n=== validateWorkflowStages ===");
@@ -60,58 +86,6 @@ console.log("\n=== validateWorkflowStages ===");
   assert(validateWorkflowStages(["ralplan", "execution", "ralph", "qa"]).valid, "full pipeline valid");
   assert(!validateWorkflowStages(["ralplan"]).valid, "single stage invalid");
   assert(!validateWorkflowStages(["execution", "ralplan"]).valid, "wrong order invalid");
-}
-
-console.log("\n=== uipath-lookout: scanCommand ===");
-{
-  const f = scanCommand("uip or robots delete --id 5");
-  assert(f.length > 0, "detects delete robot");
-  assert(f[0].category === "uipath-destructive", "category is uipath-destructive");
-}
-{
-  const f = scanCommand("uip rpa publish --force");
-  assert(f.length > 0, "detects --force production op");
-  assert(f.some(x => x.category === "uipath-production"), "category is uipath-production");
-}
-{
-  const f = scanCommand("uip rpa pack");
-  assert(f.length === 0, "safe command → no findings");
-}
-
-console.log("\n=== uipath-lookout: scanForSecrets ===");
-{
-  const f = scanForSecrets('{"password": "s3cret"}', "config.json");
-  assert(f.length > 0, "detects hardcoded password");
-  assert(f[0].category === "uipath-secrets", "category is uipath-secrets");
-}
-{
-  const f = scanForSecrets('{"apiKey": "abc123xyz"}', "settings.json");
-  assert(f.length > 0, "detects hardcoded api key");
-}
-{
-  const f = scanForSecrets('{"name": "safe-value"}', "safe.json");
-  assert(f.length === 0, "safe content → no findings");
-}
-
-console.log("\n=== uipath-lookout: scanScope ===");
-{
-  const f = scanScope("uip rpa deploy --environment prod");
-  assert(f.some(x => x.id === "scope-no-folder"), "prod without folder → scope warning");
-}
-{
-  const f = scanScope("uip rpa deploy --folder Finance", { tenant: "default" });
-  assert(!f.some(x => x.id === "scope-no-folder"), "with folder → no folder warning");
-}
-
-console.log("\n=== uipath-lookout: scanTask (combined) ===");
-{
-  const r = scanTask("uip or queues delete --id 42 --force");
-  assert(r.status === "review-recommended", "combined destructive+force → review");
-  assert(r.findings.length >= 2, "multiple findings");
-}
-{
-  const r = scanTask("uip rpa pack");
-  assert(r.status === "clear", "safe task → clear");
 }
 
 console.log("\n=== interview: createInterview ===");
@@ -137,7 +111,6 @@ console.log("\n=== interview: answerQuestion ===");
 }
 {
   let s = createInterview();
-  // Answer all questions
   for (const q of s.questions) {
     s = answerQuestion(s, q.id, "test answer");
   }

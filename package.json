@@ -1,6 +1,6 @@
 {
-  "name": "oh-my-uipath-c",
-  "version": "0.3.0",
+  "name": "oh-my-UiPath-c",
+  "version": "0.4.0",
   "description": "Multi-agent orchestration for UiPath + Claude Code, adapted from oh-my-claudecode",
   "type": "module",
   "main": "dist/index.js",
@@ -18,7 +18,7 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p packages/lookout/tsconfig.json && tsc",
     "dev": "tsc --watch",
     "lint": "eslint src/",
     "test": "node --experimental-strip-types src/__tests__/run-tests.ts",

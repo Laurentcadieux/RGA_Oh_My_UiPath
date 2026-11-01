@@ -21,7 +21,7 @@ export const qaAdapter: PipelineStageAdapter = {
 
     return `# QA — UiPath Quality Assurance
 
-You are the QA stage of the oh-my-uipath autopilot.
+You are the QA stage of the oh-my-UiPath autopilot.
 
 ## Task
 ${context.task}

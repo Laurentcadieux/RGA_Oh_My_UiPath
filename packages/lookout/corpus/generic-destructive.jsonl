@@ -1,0 +1,6 @@
+{"input": "rm -rf /tmp/test-output", "category": "generic-destructive", "expectedFindings": ["destructive"], "expectedVerdict": "review-recommended"}
+{"input": "git push --force origin main", "category": "generic-destructive", "expectedFindings": ["destructive"], "expectedVerdict": "review-recommended"}
+{"input": "git push -f origin feature-branch", "category": "generic-destructive", "expectedFindings": ["destructive"], "expectedVerdict": "review-recommended"}
+{"input": "DROP TABLE Users;", "category": "generic-destructive", "expectedFindings": ["destructive"], "expectedVerdict": "review-recommended"}
+{"input": "DELETE FROM Sessions WHERE expired = 1;", "category": "generic-destructive", "expectedFindings": ["destructive"], "expectedVerdict": "review-recommended"}
+{"input": "TRUNCATE TABLE AuditLog;", "category": "generic-destructive", "expectedFindings": ["destructive"], "expectedVerdict": "review-recommended"}

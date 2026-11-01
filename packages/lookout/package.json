@@ -1,0 +1,19 @@
+{
+  "name": "@omu-c/lookout",
+  "version": "0.1.0",
+  "description": "UiPath-aware safety scanner — command-aware parsing, policy enforcement, audit logging",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist", "corpus"],
+  "scripts": {
+    "build": "tsc",
+    "test": "node --experimental-strip-types __tests__/run-tests.ts"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Laurentcadieux/RGA_Oh_My_UiPath",
+    "directory": "packages/lookout"
+  }
+}

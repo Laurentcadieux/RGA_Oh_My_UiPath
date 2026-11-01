@@ -1,7 +1,7 @@
 {
-  "id": "oh-my-uipath-c",
-  "name": "oh-my-uipath-c",
-  "version": "0.3.0",
+  "id": "oh-my-UiPath-c",
+  "name": "oh-my-UiPath-c",
+  "version": "0.4.0",
   "description": "Multi-agent orchestration for UiPath + Claude Code — autopilot pipeline, team orchestration, ralph coding loop, UiPath CLI integration, security scanning",
   "author": "laurentc",
   "repository": "https://github.com/laurentc/RGA_Oh_My_UiPath",

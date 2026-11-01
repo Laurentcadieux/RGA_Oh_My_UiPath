@@ -1,5 +1,5 @@
 /**
- * oh-my-uipath — Core exports
+ * oh-my-UiPath — Core exports
  *
  * Multi-agent orchestration for UiPath + Claude Code,
  * adapted from oh-my-claudecode patterns.
@@ -75,12 +75,8 @@ export {
 
 // UiPath Lookout
 export {
-  scanCommand,
-  scanForSecrets,
-  scanDependencies,
-  scanScope,
-  scanProject,
   scanTask,
+  scanProject,
   type UiPathLookoutResult,
   type LookoutSeverity as UiPathLookoutSeverity,
   type LookoutFinding as UiPathLookoutFinding,

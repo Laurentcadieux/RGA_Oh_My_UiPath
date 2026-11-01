@@ -21,7 +21,7 @@ export const executionAdapter: PipelineStageAdapter = {
 
     return `# Execution — UiPath Skill-Driven Implementation
 
-You are the execution stage of the oh-my-uipath autopilot.
+You are the execution stage of the oh-my-UiPath autopilot.
 
 ## Task
 ${context.task}

@@ -1,0 +1,12 @@
+{"input": "Build the workflow and run tests", "category": "safe-english", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "Deploy the solution to the staging environment", "category": "safe-english", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "Check the queue for new items", "category": "safe-english", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "The robot should process invoices from the shared folder", "category": "safe-english", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "List all assets in the Finance folder", "category": "safe-english", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "We need to schedule the process to run at 9am", "category": "safe-english", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "Configure the Orchestrator connection settings", "category": "safe-english", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "The trigger fires when a new item arrives in the queue", "category": "safe-english", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "Monitor the job status in the dashboard", "category": "safe-english", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "Run the coded agent evaluation", "category": "safe-english", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "Update the machine template with new credentials", "category": "safe-english", "expectedFindings": [], "expectedVerdict": "clear"}
+{"input": "The process is published and ready for activation", "category": "safe-english", "expectedFindings": [], "expectedVerdict": "clear"}

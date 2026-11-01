@@ -1,0 +1,5 @@
+{"input": "uip orchestrator queues delete --id 42 --force", "category": "dangerous-flags", "expectedFindings": ["destructive", "dangerous-flag"], "expectedVerdict": "advisory"}
+{"input": "uip solution deploy --name MySol --yes", "category": "dangerous-flags", "expectedFindings": ["dangerous-flag", "scope-violation"], "expectedVerdict": "advisory"}
+{"input": "uip orchestrator robots delete --all --skip-confirmation", "category": "dangerous-flags", "expectedFindings": ["destructive", "dangerous-flag"], "expectedVerdict": "advisory"}
+{"input": "uip solution publish --force", "category": "dangerous-flags", "expectedFindings": ["dangerous-flag", "scope-violation"], "expectedVerdict": "advisory"}
+{"input": "uip orchestrator queues list --force", "category": "dangerous-flags", "expectedFindings": ["dangerous-flag"], "expectedVerdict": "advisory"}
