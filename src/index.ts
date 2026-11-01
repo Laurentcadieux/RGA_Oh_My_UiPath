@@ -38,7 +38,19 @@ export {
   type TeamOrchestrator,
   type TeamWorker,
   type TeamPaths,
+  type WorkerResult,
+  type TeamOrchestratorOptions,
 } from "./team/orchestrator.js";
+
+// Parallel pipeline
+export {
+  buildStageDag,
+  topologicalSort,
+  runParallelPipeline,
+  benchmarkSequentialVsParallel,
+  type StageNode,
+  type ParallelPipelineResult,
+} from "./pipeline/parallel.js";
 
 // uipathcli tool surface
 export {
