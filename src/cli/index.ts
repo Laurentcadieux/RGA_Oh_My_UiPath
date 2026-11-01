@@ -1,5 +1,5 @@
 /**
- * oh-my-uipath CLI entry point
+ * oh-my-uipath-c CLI entry point
  *
  * Commands:
  *   omu setup          — install skills + configure
@@ -43,10 +43,10 @@ export function run(): void {
   // ── setup ──────────────────────────────────────────────────────
   program
     .command("setup")
-    .description("Install oh-my-uipath skills and configure for Claude Code + UiPath")
+    .description("Install oh-my-uipath-c skills and configure for Claude Code + UiPath")
     .option("--skip-uipath", "Skip UiPath CLI/skills installation check")
     .action(async (opts) => {
-      console.log("🔧 Setting up oh-my-uipath...");
+      console.log("🔧 Setting up oh-my-uipath-c...");
 
       if (!opts.skipUipath) {
         console.log("\n📦 Checking UiPath CLI...");

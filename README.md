@@ -1,4 +1,4 @@
-# oh-my-uipath
+# oh-my-uipath-c
 
 Multi-agent orchestration for **UiPath + Claude Code**, adapted from [oh-my-claudecode](https://github.com/anthropics/oh-my-claudecode) patterns.
 
@@ -17,7 +17,7 @@ oh-my-uipath (omu) bridges Claude Code's multi-agent orchestration with UiPath's
 
 ```bash
 # Install
-npm install -g oh-my-uipath
+npm install -g oh-my-uipath-c
 
 # Or from source
 git clone <repo> && cd RGA_Oh_My_UiPath
@@ -63,7 +63,7 @@ omu scan "uip or robots delete" # scan a command string
 
 | Skill | Slash Command | Description |
 |-------|--------------|-------------|
-| omu-setup | `/omu-setup` | Install and configure oh-my-uipath |
+| omu-setup | `/omu-setup` | Install and configure oh-my-uipath-c |
 | omu-autopilot | `/omu-autopilot` | Run the full UiPath-aware autopilot pipeline |
 | omu-team | `/omu-team` | Multi-agent team with UiPath skill workers |
 | omu-ask | `/omu-ask` | Route questions to providers (incl. uipath) |

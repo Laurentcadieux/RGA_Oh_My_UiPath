@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * oh-my-uipath CLI binary
+ * oh-my-uipath-c CLI binary
  *
  * Usage: omu <command> [options]
  */
