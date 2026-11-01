@@ -1,6 +1,6 @@
 {
   "name": "oh-my-uipath",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Multi-agent orchestration for UiPath + Claude Code, adapted from oh-my-claudecode",
   "type": "module",
   "main": "src/index.ts",
@@ -11,10 +11,15 @@
     "build": "tsc",
     "dev": "tsc --watch",
     "lint": "eslint src/",
-    "test": "node --experimental-strip-types src/__tests__/run-tests.ts"
+    "test": "node --experimental-strip-types src/__tests__/run-tests.ts",
+    "prepublishOnly": "npm test"
   },
-  "keywords": ["uipath", "claude-code", "orchestration", "autopilot", "multi-agent"],
+  "keywords": ["uipath", "claude-code", "orchestration", "autopilot", "multi-agent", "omc"],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/laurentc/RGA_Oh_My_UiPath.git"
+  },
   "dependencies": {
     "commander": "^12.0.0",
     "yaml": "^2.4.0",
@@ -23,8 +28,6 @@
   },
   "devDependencies": {
     "typescript": "^5.5.0",
-    "@types/node": "^22.0.0",
-,
-
+    "@types/node": "^22.0.0"
   }
 }

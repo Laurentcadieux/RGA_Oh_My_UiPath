@@ -1,52 +1,148 @@
-# RGA_Oh_My_UiPath
+# oh-my-uipath
 
-**Oh My UiPath** — Multi-agent orchestration for UiPath + Claude, reverse-engineered from oh-my-claudecode using REA.
+Multi-agent orchestration for **UiPath + Claude Code**, adapted from [oh-my-claudecode](https://github.com/anthropics/oh-my-claudecode) patterns.
 
-## Vision
+## What It Does
 
-oh-my-claudecode gives Claude Code teams-first multi-agent orchestration with zero learning curve. This project brings that same experience to **UiPath + Claude** — wiring in `uipathcli` for platform API automation and `uipath/skills` for domain knowledge, so you can build, run, test, and deploy UiPath automations through natural language orchestration.
+oh-my-uipath (omu) bridges Claude Code's multi-agent orchestration with UiPath's automation platform:
 
-## Source Repos
+- **Autopilot pipeline** — ralplan → execution → ralph → qa, with UiPath-aware stages
+- **Team orchestration** — spawn UiPath skill workers as sub-agents
+- **Project discovery** — auto-detect UiPath project type (.xaml, .cs, .uipx, agent.json)
+- **Solution lifecycle** — pack → publish → deploy → activate via uipathcli
+- **Deep interview** — structured automation design interview → design document
+- **Safety lookout** — scan for destructive ops, credential exposure, scope violations
 
-| Repo | Purpose |
-|------|---------|
-| [oh-my-claudecode](https://github.com/yeachan-heo/oh-my-claudecode) | Reference architecture — autopilot, team, ask, ralph, deep-interview, lookout |
-| [rea](https://github.com/morluto/rea) | Reverse-engineering tool to analyze OMC's structure and behavior |
-| [uipath/skills](https://github.com/uipath/skills) | UiPath agent skills (rpa, agents, platform, admin, test, troubleshoot, etc.) |
-| [uipathcli](https://github.com/UiPath/uipathcli) | UiPath Platform CLI for API calls (Orchestrator, AI Center, Document Understanding) |
+## Quick Start
 
-## What OMC Provides (to replicate + adapt)
+```bash
+# Install
+npm install -g oh-my-uipath
 
-- **Autopilot** — Multi-stage task execution (ralplan → execution → ralph/qa)
-- **Team** — Multi-agent orchestration (tmux CLI workers / in-session native)
-- **Ask** — Route questions to multiple providers (claude, codex, gemini, etc.)
-- **Ralph** — Autonomous coding agent
-- **Deep Interview** — Iterative research and refinement
-- **Lookout** — Pre-flight danger scan for unattended runs
+# Or from source
+git clone <repo> && cd RGA_Oh_My_UiPath
+npm install && npm link
 
-## What We Add (UiPath-specific)
+# Setup (checks Claude Code, uipathcli, uipath/skills)
+omu setup
 
-- **uipathcli integration** — Platform API calls via `uip` CLI (auth, Orchestrator, assets, queues, jobs, triggers)
-- **uipath/skills integration** — Domain skills wired as sub-agents:
-  - `uipath-rpa` — Workflow authoring (.xaml, .cs)
-  - `uipath-agents` — AI agents (LangGraph, LlamaIndex, OpenAI Agents)
-  - `uipath-platform` — Platform operations
-  - `uipath-admin` — Identity, authorization, governance
-  - `uipath-test` — Test management
-  - `uipath-troubleshoot` — Root-cause investigation
-  - And all other stable/preview skills
-- **UiPath-aware autopilot** — Stages that understand UiPath project structure, .uipx solutions, and deployment targets
+# Discover what kind of UiPath project you're in
+omu discover
 
-## Architecture Approach
+# Design an automation via deep interview
+omu interview
 
-1. **Reverse-engineer OMC** using REA to understand its orchestration patterns, skill structure, and CLI/ plugin mechanics
-2. **Adapt the orchestration core** — keep the multi-agent patterns (autopilot, team, ask) but rewire the execution layer for UiPath
-3. **Bridge uipathcli + skills** — expose `uip` commands and skill invocations as first-class tools within the orchestration
-4. **Surface as a Claude Code plugin** — matching OMC's plugin model so it works as drop-in for Claude Code + UiPath users
+# Run the lifecycle
+omu lifecycle promote          # pack → publish → deploy → activate
+omu lifecycle test-and-promote # test first, then promote if green
 
-## Project Status
+# Security scan
+omu scan                        # scan current project directory
+omu scan "uip or robots delete" # scan a command string
+```
 
-🚧 **Phase 0 — Research & Reverse Engineering** (current)
+## CLI Commands
+
+| Command | Description |
+|---------|-------------|
+| `omu setup` | Install skills + configure Claude Code / UiPath |
+| `omu discover [dir]` | Detect UiPath project type, suggest skills |
+| `omu interview` | Deep interview for automation design |
+| `omu lifecycle <step>` | Solution lifecycle (init/pack/publish/deploy/activate/promote) |
+| `omu scan [target]` | UiPath-aware security + safety scan |
+| `omu autopilot <task>` | Run full autopilot pipeline |
+| `omu ask <provider> <prompt>` | Route question to a provider |
+| `omu uip <args>` | Proxy uipathcli commands |
+| `omu team <workers> [task]` | Multi-agent team orchestration |
+| `omu lookout [brief]` | Pre-flight danger scan |
+| `omu ralph <task>` | Autonomous coding loop |
+| `omu config` | Show merged configuration |
+| `omu version` | Print version |
+
+## Skills (Claude Code Slash Commands)
+
+| Skill | Slash Command | Description |
+|-------|--------------|-------------|
+| omu-setup | `/omu-setup` | Install and configure oh-my-uipath |
+| omu-autopilot | `/omu-autopilot` | Run the full UiPath-aware autopilot pipeline |
+| omu-team | `/omu-team` | Multi-agent team with UiPath skill workers |
+| omu-ask | `/omu-ask` | Route questions to providers (incl. uipath) |
+| omu-ralph | `/omu-ralph` | Autonomous coding loop |
+| omu-lookout | `/omu-lookout` | Pre-flight safety scan |
+
+## Project Types Detected
+
+omu discovers your UiPath project type and routes to the right skill:
+
+| Type | Signal Files | Skill |
+|------|-------------|-------|
+| classic-rpa | `.xaml` | uipath-rpa |
+| coded-automation | `.cs` (no agent.json) | uipath-coded-apps |
+| coded-agent | `agent.json` + `.cs` | uipath-agents |
+| cross-platform | `.uipx` | uipath-rpa |
+| library | `.packages` | uipath-rpa |
+| test-automation | Test Framework deps | uipath-test |
+| data-service | Data Manager patterns | uipath-platform |
+| maestro | Maestro BPMN/Case | uipath-maestro-flow |
+
+## Architecture
+
+```
+src/
+├── cli/              # CLI entry point (commander)
+├── pipeline/         # Autopilot pipeline adapter + stages
+│   ├── adapter.ts    # Pipeline runner + validation
+│   └── stages/       # ralplan, execution, ralph, qa
+├── team/             # Team orchestrator (sub-agent workers)
+├── ask/              # Ask router + providers (claude, codex, uipath)
+├── skills/           # Skill registry, frontmatter parser, sub-agent dispatcher
+├── discovery/        # UiPath project type detection
+├── lifecycle/        # Solution lifecycle (pack/publish/deploy/activate)
+├── lookout/          # Base lookout + UiPath-aware danger scanner
+├── interview/        # Deep interview for automation design
+├── config/           # Config loader
+├── uipathcli/        # Typed wrapper around `uip` CLI
+└── hooks/            # Claude Code plugin hooks (pre/post-tool-use, notification)
+
+skills/               # SKILL.md files for Claude Code
+commands/             # Slash command markdown
+docs/                 # Architecture docs, catalogs
+```
+
+## Plugin Hooks
+
+When installed as a Claude Code plugin, omu provides:
+
+- **pre-tool-use** — scans write/execute operations for dangerous UiPath commands, blocks or advises
+- **post-tool-use** — re-discovers project type when UiPath files change
+- **notification** — handles skill updates, orchestrator alerts, session-start discovery
+
+## Deep Interview
+
+The interview system walks through 8 categories of automation design:
+
+1. **Process Scope** — name, trigger, volume, boundaries
+2. **Data Contract** — inputs, outputs, transformations
+3. **Error Handling** — strategy, notification
+4. **Orchestrator** — queues, assets, environments
+5. **Human-in-the-Loop** — approval steps, exception review
+6. **Deployment** — robot type, runtime
+7. **Testing** — strategy
+8. **Security** — compliance, PII handling
+
+For **coded-agent** projects, 4 additional questions cover agent-specific concerns (triggers, tools, memory, guardrails).
+
+Completed interviews generate a **design document** and **autopilot pipeline input** (task + context + suggested skills).
+
+## Safety Scanning
+
+omu scans for:
+
+- **Destructive operations** — delete robot/queue/process/folder, unpublish, purge
+- **Production flags** — --force, --skip-confirmation, --yes
+- **Secret exposure** — hardcoded passwords, API keys, tokens, AWS/GitHub keys
+- **Scope violations** — prod without folder, deploy without tenant
+- **Stale dependencies** — pre-release versions, outdated major versions
 
 ## License
 

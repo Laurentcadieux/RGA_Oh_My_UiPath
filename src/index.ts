@@ -126,5 +126,10 @@ export {
   type InterviewResult,
 } from "./interview/index.js";
 
+// Plugin hooks
+export { preToolUse } from "./hooks/pre-tool-use.js";
+export { postToolUse } from "./hooks/post-tool-use.js";
+export { notification } from "./hooks/notification.js";
+
 // CLI
 export { run as runCli } from "./cli/index.js";

@@ -1,7 +1,44 @@
 {
   "name": "oh-my-uipath",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Multi-agent orchestration for UiPath + Claude Code — autopilot, team, ralph, ask with uipathcli integration",
+  "entry": "src/index.ts",
   "skills": "./skills/",
-  "commands": "./commands/"
+  "commands": "./commands/",
+  "hooks": {
+    "pre-tool-use": "src/hooks/pre-tool-use.ts",
+    "post-tool-use": "src/hooks/post-tool-use.ts",
+    "notification": "src/hooks/notification.ts"
+  },
+  "config": {
+    "uipathcliPath": {
+      "type": "string",
+      "default": "uip",
+      "description": "Path to uipathcli binary"
+    },
+    "skillsDir": {
+      "type": "string",
+      "default": "~/.agents/skills",
+      "description": "Directory where uipath/skills are installed"
+    },
+    "orchestratorUrl": {
+      "type": "string",
+      "description": "Default UiPath Orchestrator URL"
+    },
+    "tenant": {
+      "type": "string",
+      "description": "Default tenant for deployments"
+    },
+    "autoScan": {
+      "type": "boolean",
+      "default": true,
+      "description": "Auto-scan for UiPath projects on session start"
+    },
+    "lookoutLevel": {
+      "type": "string",
+      "enum": ["off", "advisory", "review-recommended", "block"],
+      "default": "review-recommended",
+      "description": "Minimum lookout severity to surface"
+    }
+  }
 }
