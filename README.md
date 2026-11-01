@@ -1,5 +1,13 @@
 # oh-my-uipath-c
 
+> ⚠️ **Research only.** This project is not production-certified.
+>
+> - **Not affiliated with UiPath.** This is an independent helper; UiPath names and feeds are referenced only for compatibility.
+> - **No warranty.** You use this software at your own risk. The authors are not liable for damage, data loss, compliance issues, or failed restores.
+> - **Network and licensing.** Downloads require **outbound HTTPS** to the feeds you use. You are responsible for **license terms** of each package and for **organizational policies** (proxy, firewall, export control, etc.).
+> - **Resolution is heuristic.** Version selection uses a **lowest matching version** strategy per dependency edge. It is **not** a full NuGet graph solver; results may differ from Visual Studio or `dotnet restore`.
+> - **Authenticated feeds** (private Azure Artifacts with PAT, etc.) are **not** built in; only **anonymous** NuGet v3 sources work unless you extend the code.
+
 Multi-agent orchestration for **UiPath + Claude Code**, adapted from [oh-my-claudecode](https://github.com/anthropics/oh-my-claudecode) patterns.
 
 ## What It Does
@@ -143,16 +151,6 @@ omu-c scans for:
 - **Secret exposure** — hardcoded passwords, API keys, tokens, AWS/GitHub keys
 - **Scope violations** — prod without folder, deploy without tenant
 - **Stale dependencies** — pre-release versions, outdated major versions
-
-## Disclaimer
-
-**Research only.** This project is not production-certified.
-
-- **Not affiliated with UiPath.** This is an independent helper; UiPath names and feeds are referenced only for compatibility.
-- **No warranty.** You use this software at your own risk. The authors are not liable for damage, data loss, compliance issues, or failed restores.
-- **Network and licensing.** Downloads require **outbound HTTPS** to the feeds you use. You are responsible for **license terms** of each package and for **organizational policies** (proxy, firewall, export control, etc.).
-- **Resolution is heuristic.** Version selection uses a **lowest matching version** strategy per dependency edge. It is **not** a full NuGet graph solver; results may differ from Visual Studio or `dotnet restore`.
-- **Authenticated feeds** (private Azure Artifacts with PAT, etc.) are **not** built in; only **anonymous** NuGet v3 sources work unless you extend the code.
 
 ## License
 
