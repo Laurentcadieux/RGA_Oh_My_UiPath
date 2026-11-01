@@ -21,23 +21,23 @@
 - [x] Production SKILL.md files for all 6 omu skills
 - [x] Plugin wiring (`.claude-plugin/plugin.json`)
 
-## Phase 2 — UiPath-Specific Features
+## Phase 2 — UiPath-Specific Features ✅
 
-- [ ] UiPath project discovery agent (detect .xaml, .cs, .uipx, agent.json)
-- [ ] Solution lifecycle integration (init/pack/publish/deploy/activate)
-- [ ] UiPath-aware lookout (scan for dangerous Orchestrator changes, credential exposure)
-- [ ] Deep interview adapter for UiPath automation design
+- [x] UiPath project discovery agent (detect .xaml, .cs, .uipx, agent.json)
+- [x] Solution lifecycle integration (init/pack/publish/deploy/activate)
+- [x] UiPath-aware lookout (scan for dangerous Orchestrator changes, credential exposure)
+- [x] Deep interview adapter for UiPath automation design
 
-## Phase 3 — Plugin & Distribution
+## Phase 3 — Plugin & Distribution ✅
 
-- [ ] Package as Claude Code plugin
-- [ ] Setup/install command (`/omu-setup` or `omc-uipath setup`)
-- [ ] Documentation and examples
-- [ ] CI/CD for skill updates
+- [x] Package as Claude Code plugin (hooks, config schema)
+- [x] Setup/install command (`bin/omu-setup.js`)
+- [x] Documentation and examples (README.md)
+- [x] CI/CD for skill updates (`.github/workflows/ci.yml`)
 
-## Open Questions
+## Open Questions (Resolved)
 
-- Should this be a **fork/adaptation** of OMC or a **new project** that mirrors its patterns?
-- How to handle OMC's tmux dependency for team orchestration on Windows?
-- Should uipath skills be **bundled** or **referenced** (lazy-loaded via `uip skills install`)?
-- Integration with `@uipath/cli` (Coding Agents CLI) vs `uipathcli` (Platform CLI) — both?
+- **Fork vs new project?** → New project mirroring OMC patterns. Cleaner ownership, no upstream sync burden.
+- **tmux on Windows?** → Phase 1 team orchestrator supports both tmux (Unix) and in-session native workers (cross-platform). Windows users use native mode.
+- **Bundled vs lazy-loaded skills?** → Lazy-loaded via `uip skills install`. The registry probes `~/.agents/skills` at runtime. Bundled only the 6 omu-* meta-skills.
+- **@uipath/cli vs uipathcli?** → Both. `src/uipathcli/` wraps the Platform CLI (`uip`). Coding Agents CLI (`@uipath/cli`) is invoked via the coded-agent skill when `agent.json` is detected.
