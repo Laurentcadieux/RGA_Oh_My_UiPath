@@ -2,7 +2,7 @@
 /**
  * oh-my-uipath-c CLI binary
  *
- * Usage: omu <command> [options]
+ * Usage: omu-c <command> [options]
  */
 
 import { run } from "../dist/cli/index.js";

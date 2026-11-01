@@ -4,7 +4,7 @@ Multi-agent orchestration for **UiPath + Claude Code**, adapted from [oh-my-clau
 
 ## What It Does
 
-oh-my-uipath (omu) bridges Claude Code's multi-agent orchestration with UiPath's automation platform:
+oh-my-uipath-c (omu-c) bridges Claude Code's multi-agent orchestration with UiPath's automation platform:
 
 - **Autopilot pipeline** — ralplan → execution → ralph → qa, with UiPath-aware stages
 - **Team orchestration** — spawn UiPath skill workers as sub-agents
@@ -24,40 +24,40 @@ git clone <repo> && cd RGA_Oh_My_UiPath
 npm install && npm link
 
 # Setup (checks Claude Code, uipathcli, uipath/skills)
-omu setup
+omu-c setup
 
 # Discover what kind of UiPath project you're in
-omu discover
+omu-c discover
 
 # Design an automation via deep interview
-omu interview
+omu-c interview
 
 # Run the lifecycle
-omu lifecycle promote          # pack → publish → deploy → activate
-omu lifecycle test-and-promote # test first, then promote if green
+omu-c lifecycle promote          # pack → publish → deploy → activate
+omu-c lifecycle test-and-promote # test first, then promote if green
 
 # Security scan
-omu scan                        # scan current project directory
-omu scan "uip or robots delete" # scan a command string
+omu-c scan                        # scan current project directory
+omu-c scan "uip or robots delete" # scan a command string
 ```
 
 ## CLI Commands
 
 | Command | Description |
 |---------|-------------|
-| `omu setup` | Install skills + configure Claude Code / UiPath |
-| `omu discover [dir]` | Detect UiPath project type, suggest skills |
-| `omu interview` | Deep interview for automation design |
-| `omu lifecycle <step>` | Solution lifecycle (init/pack/publish/deploy/activate/promote) |
-| `omu scan [target]` | UiPath-aware security + safety scan |
-| `omu autopilot <task>` | Run full autopilot pipeline |
-| `omu ask <provider> <prompt>` | Route question to a provider |
-| `omu uip <args>` | Proxy uipathcli commands |
-| `omu team <workers> [task]` | Multi-agent team orchestration |
-| `omu lookout [brief]` | Pre-flight danger scan |
-| `omu ralph <task>` | Autonomous coding loop |
-| `omu config` | Show merged configuration |
-| `omu version` | Print version |
+| `omu-c setup` | Install skills + configure Claude Code / UiPath |
+| `omu-c discover [dir]` | Detect UiPath project type, suggest skills |
+| `omu-c interview` | Deep interview for automation design |
+| `omu-c lifecycle <step>` | Solution lifecycle (init/pack/publish/deploy/activate/promote) |
+| `omu-c scan [target]` | UiPath-aware security + safety scan |
+| `omu-c autopilot <task>` | Run full autopilot pipeline |
+| `omu-c ask <provider> <prompt>` | Route question to a provider |
+| `omu-c uip <args>` | Proxy uipathcli commands |
+| `omu-c team <workers> [task]` | Multi-agent team orchestration |
+| `omu-c lookout [brief]` | Pre-flight danger scan |
+| `omu-c ralph <task>` | Autonomous coding loop |
+| `omu-c config` | Show merged configuration |
+| `omu-c version` | Print version |
 
 ## Skills (Claude Code Slash Commands)
 
@@ -72,7 +72,7 @@ omu scan "uip or robots delete" # scan a command string
 
 ## Project Types Detected
 
-omu discovers your UiPath project type and routes to the right skill:
+omu-c discovers your UiPath project type and routes to the right skill:
 
 | Type | Signal Files | Skill |
 |------|-------------|-------|
@@ -111,7 +111,7 @@ docs/                 # Architecture docs, catalogs
 
 ## Plugin Hooks
 
-When installed as a Claude Code plugin, omu provides:
+When installed as a Claude Code plugin, omu-c provides:
 
 - **pre-tool-use** — scans write/execute operations for dangerous UiPath commands, blocks or advises
 - **post-tool-use** — re-discovers project type when UiPath files change
@@ -136,7 +136,7 @@ Completed interviews generate a **design document** and **autopilot pipeline inp
 
 ## Safety Scanning
 
-omu scans for:
+omu-c scans for:
 
 - **Destructive operations** — delete robot/queue/process/folder, unpublish, purge
 - **Production flags** — --force, --skip-confirmation, --yes

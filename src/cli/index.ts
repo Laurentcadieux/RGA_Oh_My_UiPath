@@ -36,7 +36,7 @@ export function run(): void {
   const program = new Command();
 
   program
-    .name("omu")
+    .name("omu-c")
     .description("Multi-agent orchestration for UiPath + Claude Code")
     .version(VERSION);
 
